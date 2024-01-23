@@ -1,10 +1,10 @@
 # Enigma-Simulator
 
-A historically accurate enigma simulator. Heavily inspired by the [enigma](https://github.com/mikepound/enigma) project written by [Mike Pound](https://github.com/mikepound).
+A historically accurate Enigma M3 simulator. Heavily inspired by the [enigma](https://github.com/mikepound/enigma) project written by [Mike Pound](https://github.com/mikepound).
 
 Under development:
 
-- Support for 4 rotors
+- Support for the 4 rotor, Enigma M4 "Shark"
 - Command line argument support
 - Attack scripts: bombe, fitness functions, machine learning
 
