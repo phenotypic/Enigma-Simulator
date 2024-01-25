@@ -4,34 +4,33 @@ class Plugboard:
         
         if connections is not None:
             pairings = [pair for pair in connections.split() if pair.isalpha() and len(pair) == 2]
-            plugged_characters = set()
 
             for pair in pairings:
-                c1, c2 = ord(pair[0].upper()) - 65, ord(pair[1].upper()) - 65
+                c1, c2 = ord(pair[0]) - 65, ord(pair[1]) - 65
 
-                # If a character is already plugged, ignore the rest of the pairings
-                if c1 in plugged_characters or c2 in plugged_characters:
-                    break
+                if self.wiring[c1] != c1 or self.wiring[c2] != c2:
+                    raise Exception('Letters can only be plugged once')
 
-                plugged_characters.add(c1)
-                plugged_characters.add(c2)
                 self.wiring[c1], self.wiring[c2] = c2, c1
 
-    def forward(self, c):
+    def substitute(self, c):
         return self.wiring[c]
 
 
 class Reflector:
     reflector_encodings = {
+            'UKW_A': 'EJMZALYXVBWFCRQUONTSPIKHGD',
             'UKW_B': 'YRUHQSLDPXNGOKMIEBFZCWVJAT',
-            'UKW_C': 'FVPJIAOYEDRZXWGCTKUQSBNMHL'
+            'UKW_C': 'FVPJIAOYEDRZXWGCTKUQSBNMHL',
+            'UKW_B_THIN': 'ENKQAUYWJICOPBLMDXZVFTHRGS',
+            'UKW_C_THIN': 'RDOBJNTKVEHMLFCWZAXGYIPSUQ'
         }
     
     def __init__(self, name):
         encoding = self.reflector_encodings.get(name, 'ZYXWVUTSRQPONMLKJIHGFEDCBA')
         self.forward_wiring = [ord(char) - 65 for char in encoding]
     
-    def forward(self, c):
+    def reflect(self, c):
         return self.forward_wiring[c]
 
 
@@ -44,27 +43,21 @@ class Rotor:
             'V': ('VZBRGITYUPSDNHLXAWMJQOFECK', 25),
             'VI': ('JPGVOUMFYQBENHZRDKASXLICTW', [12, 25]),
             'VII': ('NZJHGRCXMYSWBOUFAIVLPEKQDT', [12, 25]),
-            'VIII': ('FKQHTLXOCBJSPDZRAMEWNIUYGV', [12, 25])
+            'VIII': ('FKQHTLXOCBJSPDZRAMEWNIUYGV', [12, 25]),
+            'BETA': ('LEYJVCNIXWPBQMDRTAKZGFUHOS', None),
+            'GAMMA': ('FSOKANUERHMBTIYCWLQPZXVGJD', None)
         }
     
     def __init__(self, name, rotor_position, ring_setting):
         encoding, notch = self.rotor_encodings.get(name, ('ABCDEFGHIJKLMNOPQRSTUVWXYZ', 0))
         self.name = name
         self.forward_wiring = [ord(char) - 65 for char in encoding]
-        self.backward_wiring = self.inverse_wiring(self.forward_wiring)
-        self.rotor_position = rotor_position - 1
+        self.backward_wiring = [self.forward_wiring.index(i) for i in range(26)]
         self.notch_position = notch
+        self.rotor_position = rotor_position - 1
         self.ring_setting = ring_setting - 1
 
-    @staticmethod
-    def inverse_wiring(wiring):
-        inverse = [0] * len(wiring)
-        for i, forward in enumerate(wiring):
-            inverse[forward] = i
-        return inverse
-
-    @staticmethod
-    def encipher(k, pos, ring, mapping):
+    def encipher(self, k, pos, ring, mapping):
         shift = pos - ring
         return (mapping[(k + shift + 26) % 26] - shift + 26) % 26
 
@@ -85,37 +78,41 @@ class Rotor:
 
 
 class Enigma:
-    def __init__(self, rotors, reflector_name, rotor_positions, ring_settings, plugboard_connections=None):
-        self.left_rotor = Rotor(rotors[0], rotor_positions[0], ring_settings[0])
-        self.middle_rotor = Rotor(rotors[1], rotor_positions[1], ring_settings[1])
-        self.right_rotor = Rotor(rotors[2], rotor_positions[2], ring_settings[2])
-        self.reflector = Reflector(reflector_name)
-        self.plugboard = Plugboard(plugboard_connections)
+    def __init__(self, rotors, reflector_name, rotor_positions, ring_settings, plugboard_connections):
+        if len(rotors) != len(rotor_positions) or len(rotors) != len(ring_settings):
+            raise ValueError("Number of rotors, rotor positions, and ring settings must be equal")
+
+        self.reflector = Reflector(reflector_name.upper())
+        self.rotors = [Rotor(rotor, position, setting) for rotor, position, setting in zip(rotors, rotor_positions, ring_settings)]
+        self.plugboard = Plugboard(plugboard_connections.upper() if plugboard_connections else None)
 
     def rotate(self):
-        if self.middle_rotor.is_at_notch():
-            self.middle_rotor.turnover()
-            self.left_rotor.turnover()
-        elif self.right_rotor.is_at_notch():
-            self.middle_rotor.turnover()
-        self.right_rotor.turnover()
+        # Esnure only the rightmost three rotors rotate
+        rotatable_rotors = self.rotors[-3:]
+
+        if rotatable_rotors[1].is_at_notch():
+            rotatable_rotors[0].turnover()
+            rotatable_rotors[1].turnover()
+        elif rotatable_rotors[2].is_at_notch():
+            rotatable_rotors[1].turnover()
+        rotatable_rotors[2].turnover()
 
     def encrypt(self, c):
         self.rotate()
 
-        c = self.plugboard.forward(c)
+        c = self.plugboard.substitute(c)
 
-        c = self.right_rotor.forward(c)
-        c = self.middle_rotor.forward(c)
-        c = self.left_rotor.forward(c)
+        # Go through rotors right to left
+        for rotor in reversed(self.rotors):
+            c = rotor.forward(c)
 
-        c = self.reflector.forward(c)
+        c = self.reflector.reflect(c)
 
-        c = self.left_rotor.backward(c)
-        c = self.middle_rotor.backward(c)
-        c = self.right_rotor.backward(c)
+        # Go through rotors left to right
+        for rotor in self.rotors:
+            c = rotor.backward(c)
 
-        c = self.plugboard.forward(c)
+        c = self.plugboard.substitute(c)
 
         return c
 
@@ -127,6 +124,7 @@ class Enigma:
 
 
 # Example usage
-enigma = Enigma(['I', 'II', 'VIII'], 'UKW_B', [1, 2, 3], [1, 2, 3], 'AB CD EF')
+enigma = Enigma(['I', 'II', 'III'], 'UKW_B', [1, 2, 3], [1, 2, 3], 'AB CD EF')
 encrypted = enigma.encrypt_string('HELLO WORLD')
 print(encrypted)
+
