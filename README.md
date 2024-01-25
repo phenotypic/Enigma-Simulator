@@ -1,6 +1,6 @@
 # Enigma-Simulator
 
-A historically acurate Enigma machine simulator written in Python. Supports both 3- and 4-rotor machines e.g. the Enigma I, Enigma M3, and Enigma M4 "Shark".
+A historically accurate Enigma machine simulator written in Python. Supports both 3- and 4-rotor machines e.g. the Enigma I, Enigma M3, and Enigma M4 "Shark".
 
 Heavily inspired by [Mike Pound](https://github.com/mikepound)'s [enigma](https://github.com/mikepound/enigma) project.
 
@@ -62,7 +62,7 @@ Lampboard <- Plugboard <- Rightmost Rotor <- Middle Rotor(s) <- Leftmost Rotor <
 
 ## Historical accuracy
 
-By default, the script allows for a wide range of component configurations, including those that may not be historically accurate (e.g. reuse of the same rotor type). To ensure compliance with the configurations used by the German Kriegsmarine, initialise the simulator with the `historic=True` argument:
+By default, the script allows for a wide range of component configurations, including those that may not be historically accurate (e.g. reuse of the same rotor type). To ensure compliance with German Kriegsmarine configurations, initialise the simulator with the `historic=True` argument:
 
 | Rule Category | 3-Rotor Setup | 4-Rotor Setup |
 | --- | --- | --- |
