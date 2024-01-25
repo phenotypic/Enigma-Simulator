@@ -5,6 +5,9 @@ class Plugboard:
         if connections is not None:
             pairings = [pair for pair in connections.split() if pair.isalpha() and len(pair) == 2]
 
+            if len(pairings) > 10:
+                raise ValueError('Plugboard can only have 10 connections')
+
             for pair in pairings:
                 c1, c2 = ord(pair[0]) - 65, ord(pair[1]) - 65
 
@@ -78,10 +81,9 @@ class Rotor:
 
 
 class Enigma:
-    def __init__(self, rotors, reflector_name, rotor_positions, ring_settings, plugboard_connections):
-        if len(rotors) != len(rotor_positions) or len(rotors) != len(ring_settings):
-            raise ValueError("Number of rotors, rotor positions, and ring settings must be equal")
-
+    def __init__(self, rotors, reflector_name, rotor_positions, ring_settings, plugboard_connections, historic=False):
+        rotors = [rotor.upper() for rotor in rotors]
+        self.check_setup(rotors, reflector_name, rotor_positions, ring_settings, historic)
         self.reflector = Reflector(reflector_name.upper())
         self.rotors = [Rotor(rotor, position, setting) for rotor, position, setting in zip(rotors, rotor_positions, ring_settings)]
         self.plugboard = Plugboard(plugboard_connections.upper() if plugboard_connections else None)
@@ -121,6 +123,41 @@ class Enigma:
 
     def encrypt_string(self, input_string):
         return ''.join(self.encrypt_char(char) for char in input_string if char.isalpha())
+    
+    def check_setup(self, rotors, reflector_name, rotor_positions, ring_settings, historic):
+        # Ensure length of rotors, rotor positions, and ring settings are equal
+        if len(rotors) != len(rotor_positions) or len(rotors) != len(ring_settings):
+            raise ValueError('Number of rotors, rotor positions, and ring settings must be equal')
+        
+        # Ensure number of rotors is 3 or 4
+        if len(rotors) not in [3, 4]:
+            raise ValueError('Number of rotors must be 3 or 4')
+        
+        # Validate rotor positions and ring settings
+        if not all(1 <= pos <= 26 for pos in rotor_positions):
+            raise ValueError("All rotor positions must be between 1 and 26.")
+        
+        if not all(1 <= setting <= 26 for setting in ring_settings):
+            raise ValueError("All ring settings must be between 1 and 26.")
+        
+        if historic:
+            # Check for duplicate rotors
+            if len(rotors) != len(set(rotors)):
+                raise ValueError('Each rotor type can only be used once.')
+
+            # Check for correct reflector usage
+            if len(rotors) == 3 and reflector_name not in {'UKW_A', 'UKW_B', 'UKW_C'}:
+                raise ValueError('Invalid reflector for 3-rotor setup')
+            elif reflector_name not in {'UKW_B_THIN', 'UKW_C_THIN'}:
+                raise ValueError('Invalid reflector for 4-rotor setup')
+        
+            # Check for correct Beta/Gamma rotor usage
+            if len(rotors) == 4:
+                if rotors[0] not in ['BETA', 'GAMMA']:
+                    raise ValueError('First rotor in a 4-rotor setup must be Beta or Gamma')
+            else:
+                if 'BETA' in rotors or 'GAMMA' in rotors:
+                    raise ValueError('Beta and Gamma rotors are only allowed in 4-rotor setups')
 
 
 # Example usage
