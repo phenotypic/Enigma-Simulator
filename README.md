@@ -40,6 +40,16 @@ print(output)
 
 ## Enigma overview
 
+When a key is pressed on a physical Enigma machine, the electrical signal follows this path:
+
+```
+Keyboard  -> Plugboard -> Rightmost Rotor -> Middle Rotor(s) -> Leftmost Rotor -> Reflector
+                                                                                      |
+Lampboard <- Plugboard <- Rightmost Rotor <- Middle Rotor(s) <- Leftmost Rotor <- Reflector
+```
+
+**Note:** The rotors rotate before the signal passes through them. When a rotor reaches its notch position, it causes the next rotor to the left to rotate as well.
+
 ### Components
 
 | Component | Options | Function |
@@ -49,18 +59,6 @@ print(output)
 | Plugboard | Up to 10 letter pairs | Allows pairs of letters to be swapped before and after rotor encryption, adding another layer of complexity |
 
 **Note:** Enigma machines of the German Wehrmacht (Heer and Luftwaffe) were supplied with rotors `I`-`V`, while the German Navy (Kriegsmarine) were supplied with rotors `I`-`VIII`.
-
-### Signal path
-
-When a key is pressed on the Enigma machine, the electrical signal follows this path:
-
-```
-Keyboard  -> Plugboard -> Rightmost Rotor -> Middle Rotor(s) -> Leftmost Rotor -> Reflector
-                                                                                      |
-Lampboard <- Plugboard <- Rightmost Rotor <- Middle Rotor(s) <- Leftmost Rotor <- Reflector
-```
-
-**Note:** The rotors rotate before the signal passes through them. When a rotor reaches its notch position, it causes the next rotor to the left to rotate as well.
 
 ## Historical accuracy
 
