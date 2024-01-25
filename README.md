@@ -73,4 +73,6 @@ By default, the script allows for a wide range of component configurations, incl
 | **Mandatory Rotors** | At least one of `VI`, `VII`, `VIII` must be included | At least one of `VI`, `VII`, `VIII` must be included |
 | **Plugboard Connections** | Up to 10 connections | Up to 10 connections |
 
+**Note:** You can disable essential checks with the `disable_checks=True` argument. Only recommended if you are optimising for speed.
+
 
