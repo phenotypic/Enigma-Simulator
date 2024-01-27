@@ -21,22 +21,28 @@ Change to the project directory:
 cd Enigma-Simulator
 ```
 
-Run the script:
-```
-python3 enigma.py
-```
-
-Integrate the simulator:
+Import the simulator:
 ```python
 from enigma import Enigma
-
-# Initialise the Enigma machine with specific settings
-enigma = Enigma(rotors=['I', 'II', 'III'], reflector_name='UKW_B', rotor_positions=[1, 1, 1], ring_settings=[1, 1, 1], plugboard_connections='AB CD EF')
-
-# Encrypt/decrypt a message
-output = enigma.encrypt_string('HELLO WORLD')
-print(output)
 ```
+
+3-rotor enigma:
+```python
+enigma = Enigma(rotors=['IV', 'VII', 'III'], reflector_name='UKW_B', rotor_positions=[18, 5, 21], ring_settings=[2, 14, 19], plugboard_connections='bq cr di ej kw mt os px uz gh')
+transformed = enigma.transform_string('Sometimes it is the people no one can imagine anything of who do the things no one can imagine')
+print(transformed)
+# KLFNHABWWYLCJIFRDGPFSPDETDNAKRNDSZJGXKDVFKCRZYEGXSXQAJOQQOTXHONGIURHBKPYIACN
+```
+
+4-rotor enigma:
+```python
+enigma = Enigma(rotors=['GAMMA', 'VI', 'VIII', 'IV'], reflector_name='UKW_C_THIN', rotor_positions=[19, 6, 25, 3], ring_settings=[8, 2, 12, 20], plugboard_connections='bq cr di ej kw mt os px uz gh')
+transformed = enigma.transform_string('Sometimes it is the people no one can imagine anything of who do the things no one can imagine')
+print(transformed)
+# NSORZZEIBALCKRRAXBDRPLAGYGFJNFKGTBLBIUUFAKZJQWXMAVJMFBXHEXXZKKHDLCMRBDEXJDVJ
+```
+
+**Note:** The Enigma machine's symmetric design allows for both encryption and decryption using the `transform_string` method
 
 ## Enigma overview
 
