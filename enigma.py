@@ -2,6 +2,7 @@ class Plugboard:
     def __init__(self, connections):
         self.wiring = list(range(26))
         
+        # Set up plugboard connections
         if connections is not None:
             pairings = [pair for pair in connections.split() if pair.isalpha() and len(pair) == 2]
 
@@ -16,6 +17,7 @@ class Plugboard:
 
                 self.wiring[c1], self.wiring[c2] = c2, c1
 
+    # Substitute letter through the plugboard
     def substitute(self, c):
         return self.wiring[c]
 
@@ -33,6 +35,7 @@ class Reflector:
         encoding = self.reflector_encodings.get(name, 'ZYXWVUTSRQPONMLKJIHGFEDCBA')
         self.forward_wiring = [ord(char) - 65 for char in encoding]
     
+    # Reflect letter through the reflector
     def reflect(self, c):
         return self.forward_wiring[c]
 
@@ -54,15 +57,18 @@ class Rotor:
     def __init__(self, name, rotor_position, ring_setting):
         encoding, notch = self.rotor_encodings.get(name, ('ABCDEFGHIJKLMNOPQRSTUVWXYZ', 0))
         self.name = name
+        # Create convert forward wiring from letters to numbers
         self.forward_wiring = [ord(char) - 65 for char in encoding]
+        # Create backward wiring by inverting forward wiring
         self.backward_wiring = [self.forward_wiring.index(i) for i in range(26)]
         self.notch_position = notch
         self.rotor_position = rotor_position - 1
         self.ring_setting = ring_setting - 1
 
-    def encipher(self, k, pos, ring, mapping):
+    def encipher(self, c, pos, ring, mapping):
+        # Adjust character by ring and position, pass through rotor wiring, then reverse adjustment
         shift = pos - ring
-        return (mapping[(k + shift + 26) % 26] - shift + 26) % 26
+        return (mapping[(c + shift + 26) % 26] - shift + 26) % 26
 
     def forward(self, c):
         return self.encipher(c, self.rotor_position, self.ring_setting, self.forward_wiring)
@@ -93,6 +99,7 @@ class Enigma:
         # Esnure only the three rightmost rotors rotate
         rotatable_rotors = self.rotors[-3:]
 
+        # Turnover rotors if at notch position, accounting for double step
         if rotatable_rotors[1].is_at_notch():
             rotatable_rotors[0].turnover()
             rotatable_rotors[1].turnover()
@@ -101,29 +108,34 @@ class Enigma:
         rotatable_rotors[2].turnover()
 
     def encrypt(self, c):
+        # Rotate rotors before transforming character
         self.rotate()
 
+        # Substitute letter through plugboard
         c = self.plugboard.substitute(c)
 
-        # Go through rotors right to left
+        # Transform character through rotors right to left
         for rotor in reversed(self.rotors):
             c = rotor.forward(c)
 
         c = self.reflector.reflect(c)
 
-        # Go through rotors left to right
+        # Transform character through rotors left to right
         for rotor in self.rotors:
             c = rotor.backward(c)
 
+        # Substitute letter through plugboard
         c = self.plugboard.substitute(c)
 
         return c
 
-    def encrypt_char(self, char):
+    # Transform a single character through the enigma machine
+    def transform_char(self, char):
         return chr(self.encrypt(ord(char.upper()) - 65) + 65)
 
-    def encrypt_string(self, input_string):
-        return ''.join(self.encrypt_char(char) for char in input_string if char.isalpha())
+    # Transform a string through the enigma machine
+    def transform_string(self, input_string):
+        return ''.join(self.transform_char(char) for char in input_string if char.isalpha())
     
     def check_setup(self, rotors, reflector_name, rotor_positions, ring_settings, historic):
         # Ensure length of rotors, rotor positions, and ring settings are equal
@@ -162,10 +174,3 @@ class Enigma:
                 
             if not any(rotor in ['VI', 'VII', 'VIII'] for rotor in rotors):
                 raise ValueError("At least one of the rotors must be VI, VII, or VIII")
-
-
-# Example usage
-enigma = Enigma(['I', 'II', 'III'], 'UKW_B', [1, 2, 3], [1, 2, 3], 'AB CD EF')
-encrypted = enigma.encrypt_string('HELLO WORLD')
-print(encrypted)
-
