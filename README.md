@@ -6,7 +6,6 @@ Heavily inspired by [Mike Pound](https://github.com/mikepound)'s [enigma](https:
 
 Under development:
 
-- Command line interface
 - Attack scripts: bombe, fitness functions, machine learning
 
 ## Usage
