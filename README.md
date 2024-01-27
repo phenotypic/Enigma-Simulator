@@ -48,7 +48,7 @@ Keyboard  -> Plugboard -> Rightmost Rotor -> Middle Rotor(s) -> Leftmost Rotor -
 Lampboard <- Plugboard <- Rightmost Rotor <- Middle Rotor(s) <- Leftmost Rotor <- Reflector
 ```
 
-**Note:** The rotors rotate before the signal passes through them. When a rotor reaches its notch position, it causes the next rotor to the left to rotate as well.
+**Note:** Rotors rotate before the signal passes through them. When a rotor reaches its notch position, it causes the next rotor to rotate as well.
 
 ### Components
 
@@ -67,7 +67,7 @@ By default, the script allows for a wide range of component configurations, incl
 | Rule Category | 3-Rotor Setup | 4-Rotor Setup |
 | --- | --- | --- |
 | **Rotor Count** | Exactly 3 rotors | Exactly 4 rotors |
-| **Rotor Types** | Rotors `I`-`VIII` are allowed in any order | Leftmost rotor must be Beta or Gamma, others can be `I`-`VIII` |
+| **Rotor Types** | Rotors `I`-`VIII` are allowed in any order | Leftmost rotor must be `Beta` or `Gamma`, others can be `I`-`VIII` |
 | **Rotor Reuse** | Not allowed | Not allowed |
 | **Reflector Types** | `UKW_A`, `UKW_B`, `UKW_C` | `UKW_B_THIN`, `UKW_C_THIN` |
 | **Mandatory Rotors** | At least one of `VI`, `VII`, `VIII` must be included | At least one of `VI`, `VII`, `VIII` must be included |
