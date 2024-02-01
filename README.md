@@ -4,7 +4,7 @@ A historically accurate Enigma machine simulator written in Python. Supports bot
 
 Heavily inspired by [Mike Pound](https://github.com/mikepound)'s [enigma](https://github.com/mikepound/enigma) project.
 
-Under development:
+**Under development:**
 
 - Attack scripts: bombe, fitness functions, machine learning
 
@@ -41,7 +41,7 @@ print(transformed)
 # NSORZZEIBALCKRRAXBDRPLAGYGFJNFKGTBLBIUUFAKZJQWXMAVJMFBXHEXXZKKHDLCMRBDEXJDVJ
 ```
 
-**Note:** The Enigma machine's symmetric design allows for both encryption and decryption using the `transform_string` method
+**Note:** The Enigma machine's symmetric design allows for both encryption and decryption using the `transform_string` method.
 
 ## Enigma overview
 
@@ -69,7 +69,7 @@ Lampboard <- Plugboard <- Rightmost Rotor <- Middle Rotor(s) <- Leftmost Rotor <
 
 By default, the script allows for a wide range of component configurations, including those that may not be historically accurate (e.g. reuse of the same rotor type). To ensure compliance with German Kriegsmarine configurations, initialise the simulator with the `historic=True` argument:
 
-| Rule Category | 3-Rotor Setup | 4-Rotor Setup |
+| | 3-Rotor Setup | 4-Rotor Setup |
 | --- | --- | --- |
 | **Rotor Count** | Exactly 3 rotors | Exactly 4 rotors |
 | **Rotor Types** | Rotors `I`-`VIII` are allowed in any order | Leftmost rotor must be `Beta` or `Gamma`, others can be `I`-`VIII` |
@@ -78,6 +78,6 @@ By default, the script allows for a wide range of component configurations, incl
 | **Mandatory Rotors** | At least one of `VI`, `VII`, `VIII` must be included | At least one of `VI`, `VII`, `VIII` must be included |
 | **Plugboard Connections** | Up to 10 connections | Up to 10 connections |
 
-**Note:** You can disable essential checks with the `disable_checks=True` argument. Only recommended if you are optimising for speed.
+**Note:** You can disable all configuration checks with the `disable_checks=True` argument if you are optimising for speed.
 
 
