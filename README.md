@@ -67,7 +67,7 @@ Lampboard <- Plugboard <- Rightmost Rotor <- Middle Rotor(s) <- Leftmost Rotor <
 
 ## Historical accuracy
 
-By default, the script allows for a wide range of component configurations, including those that may not be historically accurate (e.g. reuse of the same rotor type). To ensure compliance with German Kriegsmarine configurations, initialise the simulator with the `historic=True` argument:
+By default, the script allows for a wide range of component configurations, including those that may not be historically accurate (e.g. reuse of the same rotor type). Follow these rules to ensure compliance with German Kriegsmarine configurations:
 
 | | 3-Rotor Setup | 4-Rotor Setup |
 | --- | --- | --- |
@@ -78,6 +78,8 @@ By default, the script allows for a wide range of component configurations, incl
 | **Mandatory Rotors** | At least one of `VI`, `VII`, `VIII` must be included | At least one of `VI`, `VII`, `VIII` must be included |
 | **Plugboard Connections** | Up to 10 connections | Up to 10 connections |
 
-**Note:** You can disable all configuration checks with the `disable_checks=True` argument if you are optimising for speed.
+## Notes
 
+- `rotor_positions` and `ring_settings` can be given as numbers or letters. E.g. `[2, 14, 19]` or `['B', 'N', 'S']`.
+- You can disable configuration checks (e.g. rotor position/ring setting validation) with the `disable_checks=True` argument if you are optimising for speed.
 
