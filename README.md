@@ -76,7 +76,7 @@ By default, the script allows for a wide range of component configurations, incl
 | **Rotor Reuse** | Not allowed | Not allowed |
 | **Reflector Types** | `UKW_A`, `UKW_B`, `UKW_C` | `UKW_B_THIN`, `UKW_C_THIN` |
 | **Mandatory Rotors** | At least one of `VI`, `VII`, `VIII` must be included | At least one of `VI`, `VII`, `VIII` must be included |
-| **Plugboard Connections** | Up to 10 connections | Up to 10 connections |
+| **Plugboard Connections** | Up to 10 letter pairs | Up to 10 letter pairs |
 
 ## Notes
 
