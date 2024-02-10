@@ -87,13 +87,11 @@ class Rotor:
 
 
 class Enigma:
-    def __init__(self, rotors, reflector_name, rotor_positions, ring_settings, plugboard_connections, disable_checks=False):
+    def __init__(self, rotors, reflector_name, rotor_positions, ring_settings, plugboard_connections):
         rotors = [rotor.upper() for rotor in rotors]
         rotor_positions = self.convert_to_numbers(rotor_positions)
         ring_settings = self.convert_to_numbers(ring_settings)
         
-        if not disable_checks:
-            self.check_setup(rotors, reflector_name, rotor_positions, ring_settings)
         self.reflector = Reflector(reflector_name.upper())
         self.rotors = [Rotor(rotor, position, setting) for rotor, position, setting in zip(rotors, rotor_positions, ring_settings)]
         self.plugboard = Plugboard(plugboard_connections.upper() if plugboard_connections else None)
@@ -150,19 +148,3 @@ class Enigma:
     # Transform a string through the enigma machine
     def transform_string(self, input_string):
         return ''.join(self.transform_char(char) for char in input_string if char.isalpha())
-    
-    def check_setup(self, rotors, rotor_positions, ring_settings):
-        # Ensure length of rotors, rotor positions, and ring settings are equal
-        if len(rotors) != len(rotor_positions) or len(rotors) != len(ring_settings):
-            raise ValueError('Number of rotors, rotor positions, and ring settings must be equal')
-            
-        # Ensure number of rotors is 3 or 4
-        if len(rotors) not in [3, 4]:
-            raise ValueError('Number of rotors must be 3 or 4')
-            
-        # Validate rotor positions and ring settings
-        if not all(1 <= pos <= 26 for pos in rotor_positions):
-            raise ValueError("All rotor positions must be between 1 and 26.")
-            
-        if not all(1 <= setting <= 26 for setting in ring_settings):
-            raise ValueError("All ring settings must be between 1 and 26.")
