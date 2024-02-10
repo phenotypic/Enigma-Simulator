@@ -87,13 +87,27 @@ class Rotor:
 
 
 class Enigma:
-    def __init__(self, rotors, reflector_name, rotor_positions, ring_settings, plugboard_connections, historic=False, disable_checks=False):
+    def __init__(self, rotors, reflector_name, rotor_positions, ring_settings, plugboard_connections, disable_checks=False):
         rotors = [rotor.upper() for rotor in rotors]
+        rotor_positions = self.convert_to_numbers(rotor_positions)
+        ring_settings = self.convert_to_numbers(ring_settings)
+        
         if not disable_checks:
-            self.check_setup(rotors, reflector_name, rotor_positions, ring_settings, historic)
+            self.check_setup(rotors, reflector_name, rotor_positions, ring_settings)
         self.reflector = Reflector(reflector_name.upper())
         self.rotors = [Rotor(rotor, position, setting) for rotor, position, setting in zip(rotors, rotor_positions, ring_settings)]
         self.plugboard = Plugboard(plugboard_connections.upper() if plugboard_connections else None)
+
+    def convert_to_numbers(self, input_list):
+        # Convert letters to numbers for rotor positions and ring settings if necessary
+        output_list = []
+        for item in input_list:
+            if isinstance(item, str):
+                number = ord(item.upper()) - ord('A') + 1
+                output_list.append(number)
+            else:
+                output_list.append(item)
+        return output_list
 
     def rotate(self):
         # Esnure only the three rightmost rotors rotate
@@ -137,7 +151,7 @@ class Enigma:
     def transform_string(self, input_string):
         return ''.join(self.transform_char(char) for char in input_string if char.isalpha())
     
-    def check_setup(self, rotors, reflector_name, rotor_positions, ring_settings, historic):
+    def check_setup(self, rotors, rotor_positions, ring_settings):
         # Ensure length of rotors, rotor positions, and ring settings are equal
         if len(rotors) != len(rotor_positions) or len(rotors) != len(ring_settings):
             raise ValueError('Number of rotors, rotor positions, and ring settings must be equal')
@@ -152,25 +166,3 @@ class Enigma:
             
         if not all(1 <= setting <= 26 for setting in ring_settings):
             raise ValueError("All ring settings must be between 1 and 26.")
-        
-        if historic:
-            # Check for duplicate rotors
-            if len(rotors) != len(set(rotors)):
-                raise ValueError('Each rotor type can only be used once.')
-
-            # Check for correct reflector usage
-            if len(rotors) == 3 and reflector_name not in {'UKW_A', 'UKW_B', 'UKW_C'}:
-                raise ValueError('Invalid reflector for 3-rotor setup')
-            elif len(rotors) == 4 and reflector_name not in {'UKW_B_THIN', 'UKW_C_THIN'}:
-                raise ValueError('Invalid reflector for 4-rotor setup')
-        
-            # Check for correct Beta/Gamma rotor usage
-            if len(rotors) == 4:
-                if rotors[0] not in ['BETA', 'GAMMA']:
-                    raise ValueError('First rotor in a 4-rotor setup must be Beta or Gamma')
-            else:
-                if 'BETA' in rotors or 'GAMMA' in rotors:
-                    raise ValueError('Beta and Gamma rotors are only allowed in 4-rotor setups')
-                
-            if not any(rotor in ['VI', 'VII', 'VIII'] for rotor in rotors):
-                raise ValueError("At least one of the rotors must be VI, VII, or VIII")
