@@ -41,7 +41,7 @@ print(transformed)
 # NSORZZEIBALCKRRAXBDRPLAGYGFJNFKGTBLBIUUFAKZJQWXMAVJMFBXHEXXZKKHDLCMRBDEXJDVJ
 ```
 
-**Note:** The Enigma machine's symmetric design allows for both encryption and decryption using the `transform_string` method.
+**Notes:** The Enigma machine's symmetric design allows for both encryption and decryption using the `transform_string` method. Rotor positions and ring settings can be passed as numbers or letters.
 
 ## Enigma overview
 
@@ -77,8 +77,3 @@ By default, the script allows for a wide range of component configurations, incl
 | **Reflector Types** | `UKW_A`, `UKW_B`, `UKW_C` | `UKW_B_THIN`, `UKW_C_THIN` |
 | **Mandatory Rotors** | At least one of `VI`, `VII`, `VIII` must be included | At least one of `VI`, `VII`, `VIII` must be included |
 | **Plugboard Connections** | Up to 10 letter pairs | Up to 10 letter pairs |
-
-## Notes
-
-- `rotor_positions` and `ring_settings` can be given as numbers or letters. E.g. `[2, 14, 19]` or `['B', 'N', 'S']`.
-
