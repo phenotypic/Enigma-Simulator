@@ -81,5 +81,4 @@ By default, the script allows for a wide range of component configurations, incl
 ## Notes
 
 - `rotor_positions` and `ring_settings` can be given as numbers or letters. E.g. `[2, 14, 19]` or `['B', 'N', 'S']`.
-- You can disable configuration checks (e.g. rotor position/ring setting validation) with the `disable_checks=True` argument if you are optimising for speed.
 
