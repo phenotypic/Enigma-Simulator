@@ -32,6 +32,7 @@ class Reflector:
         }
     
     def __init__(self, name):
+        # Retrieve reflector encoding and convert to numbers
         encoding = self.reflector_encodings.get(name, 'ZYXWVUTSRQPONMLKJIHGFEDCBA')
         self.forward_wiring = [ord(char) - 65 for char in encoding]
     
@@ -55,12 +56,16 @@ class Rotor:
         }
     
     def __init__(self, name, rotor_position, ring_setting):
+        # Get rotor encoding and notch position
         encoding, notch = self.rotor_encodings.get(name, ('ABCDEFGHIJKLMNOPQRSTUVWXYZ', 0))
-        self.name = name
-        # Create convert forward wiring from letters to numbers
+        
+        # Convert forward wiring from letters to numbers
         self.forward_wiring = [ord(char) - 65 for char in encoding]
+        
         # Create backward wiring by inverting forward wiring
         self.backward_wiring = [self.forward_wiring.index(i) for i in range(26)]
+
+        # Set rotor position and ring setting
         self.notch_position = notch
         self.rotor_position = rotor_position - 1
         self.ring_setting = ring_setting - 1
@@ -88,10 +93,12 @@ class Rotor:
 
 class Enigma:
     def __init__(self, rotors, reflector_name, rotor_positions, ring_settings, plugboard_connections):
+        # Parse seyup parameters and convert to numbers if necessary
         rotors = [rotor.upper() for rotor in rotors]
         rotor_positions = self.convert_to_numbers(rotor_positions)
         ring_settings = self.convert_to_numbers(ring_settings)
         
+        # Initialise components
         self.reflector = Reflector(reflector_name.upper())
         self.rotors = [Rotor(rotor, position, setting) for rotor, position, setting in zip(rotors, rotor_positions, ring_settings)]
         self.plugboard = Plugboard(plugboard_connections.upper() if plugboard_connections else None)

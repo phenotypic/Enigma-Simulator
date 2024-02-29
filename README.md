@@ -2,7 +2,7 @@
 
 A historically accurate Enigma machine simulator written in Python. Supports both 3- and 4-rotor machines including the Enigma I, Enigma M3, and Enigma M4 "Shark".
 
-Heavily inspired by [Mike Pound](https://github.com/mikepound)'s [enigma](https://github.com/mikepound/enigma) project.
+Inspired by [Mike Pound](https://github.com/mikepound)'s [enigma](https://github.com/mikepound/enigma) project.
 
 **Under development:**
 
@@ -41,7 +41,7 @@ print(transformed)
 # NSORZZEIBALCKRRAXBDRPLAGYGFJNFKGTBLBIUUFAKZJQWXMAVJMFBXHEXXZKKHDLCMRBDEXJDVJ
 ```
 
-**Notes:** The Enigma machine's symmetric design allows for both encryption and decryption using the `transform_string` method. Rotor positions and ring settings can be passed as numbers or letters.
+**Notes:** The Enigma machine's symmetric design allows for both encryption and decryption using the `transform_string` method. Rotor positions and ring settings can be passed as numbers (1-26) or letters (A-Z).
 
 ## Enigma overview
 
