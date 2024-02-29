@@ -43,7 +43,7 @@ print(transformed)
 
 **Notes:** The Enigma machine's symmetric design allows for both encryption and decryption using the `transform_string` method. Rotor positions and ring settings can be passed as numbers (1-26) or letters (A-Z).
 
-## Enigma overview
+## Enigma Machine
 
 When a key is pressed on a physical Enigma machine, the electrical signal follows this path:
 
@@ -65,7 +65,7 @@ Lampboard <- Plugboard <- Rightmost Rotor <- Middle Rotor(s) <- Leftmost Rotor <
 
 **Note:** Enigma machines of the German Wehrmacht (Heer and Luftwaffe) were supplied with rotors `I`-`V`, while the German Navy (Kriegsmarine) were supplied with rotors `I`-`VIII`.
 
-## Historical accuracy
+### Historical accuracy
 
 By default, the script allows for a wide range of component configurations, including those that may not be historically accurate (e.g. reuse of the same rotor type). Follow these rules to ensure compliance with German Kriegsmarine configurations:
 
