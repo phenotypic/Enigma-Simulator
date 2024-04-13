@@ -4,10 +4,6 @@ A historically accurate Enigma machine simulator written in Python. Supports bot
 
 Inspired by [Mike Pound](https://github.com/mikepound)'s [enigma](https://github.com/mikepound/enigma) project.
 
-**Under development:**
-
-- Attack scripts: bombe, fitness functions, machine learning
-
 ## Usage
 
 Clone the repository:
@@ -48,9 +44,11 @@ print(transformed)
 When a key is pressed on a physical Enigma machine, the electrical signal follows this path:
 
 ```
-Keyboard  -> Plugboard -> Rightmost Rotor -> Middle Rotor(s) -> Leftmost Rotor -> Reflector
-                                                                                      |
-Lampboard <- Plugboard <- Rightmost Rotor <- Middle Rotor(s) <- Leftmost Rotor <- Reflector
+Keyboard  → Plugboard → Rightmost Rotor → Middle Rotor(s) → Leftmost Rotor
+                                                                  ↓
+                                                              Reflector
+                                                                  ↓
+Lampboard ← Plugboard ← Rightmost Rotor ← Middle Rotor(s) ← Leftmost Rotor
 ```
 
 **Note:** Rotors rotate before the signal passes through them. When a rotor reaches its notch position, it causes the next rotor to rotate as well.
