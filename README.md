@@ -45,9 +45,9 @@ When a key is pressed on a physical Enigma machine, the electrical signal follow
 
 ```
 Keyboard  → Plugboard → Rightmost Rotor → Middle Rotor(s) → Leftmost Rotor
-                                                                  ↓
-                                                              Reflector
-                                                                  ↓
+                                                                   ↓
+                                                               Reflector
+                                                                   ↓
 Lampboard ← Plugboard ← Rightmost Rotor ← Middle Rotor(s) ← Leftmost Rotor
 ```
 
