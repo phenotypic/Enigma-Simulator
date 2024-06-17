@@ -23,7 +23,7 @@ from enigma import Enigma
 
 3-rotor enigma:
 ```python
-enigma = Enigma(rotors=['IV', 'VII', 'III'], reflector_name='UKW_B', rotor_positions=[18, 5, 21], ring_settings=[2, 14, 19], plugboard_connections='bq cr di ej kw mt os px uz gh')
+enigma = Enigma(rotors=['IV', 'VII', 'III'], reflector_name='UKW_B', rotor_positions=[18, 5, 21], ring_settings=[2, 14, 19], plugboard_connections=['BQ', 'CR', 'DI', 'EJ', 'KW', 'MT', 'OS', 'PX', 'UZ', 'GH'])
 transformed = enigma.transform_string('Sometimes it is the people no one can imagine anything of who do the things no one can imagine')
 print(transformed)
 # KLFNHABWWYLCJIFRDGPFSPDETDNAKRNDSZJGXKDVFKCRZYEGXSXQAJOQQOTXHONGIURHBKPYIACN
@@ -31,7 +31,7 @@ print(transformed)
 
 4-rotor enigma:
 ```python
-enigma = Enigma(rotors=['GAMMA', 'VI', 'VIII', 'IV'], reflector_name='UKW_C_THIN', rotor_positions=[19, 6, 25, 3], ring_settings=[8, 2, 12, 20], plugboard_connections='bq cr di ej kw mt os px uz gh')
+enigma = Enigma(rotors=['GAMMA', 'VI', 'VIII', 'IV'], reflector_name='UKW_C_THIN', rotor_positions=[19, 6, 25, 3], ring_settings=[8, 2, 12, 20], plugboard_connections=['BQ', 'CR', 'DI', 'EJ', 'KW', 'MT', 'OS', 'PX', 'UZ', 'GH'])
 transformed = enigma.transform_string('Sometimes it is the people no one can imagine anything of who do the things no one can imagine')
 print(transformed)
 # NSORZZEIBALCKRRAXBDRPLAGYGFJNFKGTBLBIUUFAKZJQWXMAVJMFBXHEXXZKKHDLCMRBDEXJDVJ
