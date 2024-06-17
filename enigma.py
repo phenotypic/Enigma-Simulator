@@ -97,11 +97,12 @@ class Enigma:
         rotors = [rotor.upper() for rotor in rotors]
         rotor_positions = self.convert_to_numbers(rotor_positions)
         ring_settings = self.convert_to_numbers(ring_settings)
+        plugboard_connections = plugboard_connections.strip()
         
         # Initialise components
         self.reflector = Reflector(reflector_name.upper())
         self.rotors = [Rotor(rotor, position, setting) for rotor, position, setting in zip(rotors, rotor_positions, ring_settings)]
-        self.plugboard = Plugboard(plugboard_connections.strip().upper() if plugboard_connections else None)
+        self.plugboard = Plugboard(plugboard_connections.upper() if plugboard_connections else None)
 
     def convert_to_numbers(self, input_list):
         # Convert letters to numbers for rotor positions and ring settings if necessary
