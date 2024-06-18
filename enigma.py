@@ -1,9 +1,10 @@
 class Plugboard:
-    def __init__(self, connections):
+    def __init__(self, plugboard_connections):
         self.wiring = list(range(26))
         
         # Set up plugboard connections
-        if connections:
+        if plugboard_connections:
+            connections = list(map(str.upper, plugboard_connections))
             if len(connections) > 10:
                 raise ValueError('Plugboard can only have 10 connections')
 
@@ -99,7 +100,7 @@ class Enigma:
         # Initialise components
         self.reflector = Reflector(reflector_name.upper())
         self.rotors = [Rotor(rotor, position, setting) for rotor, position, setting in zip(rotors, rotor_positions, ring_settings)]
-        self.plugboard = Plugboard(list(map(str.upper, plugboard_connections)))
+        self.plugboard = Plugboard(plugboard_connections)
 
     def convert_to_numbers(self, input_list):
         # Convert letters to numbers for rotor positions and ring settings if necessary
