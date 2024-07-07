@@ -152,5 +152,12 @@ class Enigma:
         return chr(self.encrypt(ord(char.upper()) - 65) + 65)
 
     # Transform a string through the enigma machine
-    def transform_string(self, input_string):
-        return ''.join(self.transform_char(char) for char in input_string if char.isalpha())
+    def transform_string(self, input_string, spaces=False):
+        # Transform the input string using the transform_char method
+        transformed_string = ''.join(self.transform_char(char) for char in input_string if char.isalpha())
+
+        # Add spaces to the transformed string if required
+        if spaces:
+            transformed_string = ' '.join(transformed_string[i:i+5] for i in range(0, len(transformed_string), 5))
+
+        return transformed_string
