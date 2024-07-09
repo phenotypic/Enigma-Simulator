@@ -28,24 +28,7 @@ Run the main script:
 python3 main.py
 ```
 
-The `main.py` script provides an interface for both the Enigma machine simulator and the cryptanalysis tool. When you run `main.py`, you can choose to either simulate an Enigma machine or perform cryptanalysis on an Enigma-encrypted message.
-
-#### Enigma Machine Simulator
-
-For the Enigma machine simulator, you can customise:
-- Rotors
-- Rotor positions
-- Ring settings
-- Reflector
-- Plugboard connections
-
-#### Cryptanalysis Tool
-
-For the cryptanalysis tool, you can customise:
-- Rotors (cracking Enigma with rotors I-V or I-VIII; 4-rotor Enigma machines are not supported yet)
-- Reflector
-- Top N (the number of top rotor and rotor position combinations considered for finding the best ring settings; default is 1000)
-- Max Pairs (the maximum number of plugboard pairs considered during cracking; default is 10)
+The `main.py` script provides an interface for both the Enigma machine simulator and the cryptanalysis tool.
 
 ### Importing the Simulator
 
@@ -115,6 +98,15 @@ By default, the script allows for a wide range of component configurations, incl
 - **Scoring**: Uses quadgrams for scoring; a fitness function determines how 'English-like' the decryption is. Only English is implemented currently, but other languages can be added by generating new quadgram files.
 - **Target Length**: Designed to decrypt messages of length 200-250 characters using only the ciphertext.
 - **Complexity Reduction**: The process exploits the fact that the rotor order and indicator settings can be determined independent of the plugboard and ring settings, significantly reducing overall complexity.
+
+For the cryptanalysis tool, you can customise:
+
+| Setting | Description |
+| --- | --- |
+| Rotors | Crack enigma with rotors `I`-`V` or `I`-`VIII` |
+| Reflector | Choose reflector `UKW_A`, `UKW_B`, or `UKW_C` |
+| Top N | The number of top rotor and rotor position combinations considered for finding the best ring settings (default is `1000` |
+| Max Pairs | The maximum number of plugboard pairs considered during cracking (default is `10` |
 
 ### Steps
 
