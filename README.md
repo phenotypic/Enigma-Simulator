@@ -2,6 +2,8 @@
 
 A historically accurate Enigma machine simulator written in Python. Supports both 3- and 4-rotor machines including the Enigma I, Enigma M3, and Enigma M4 'Shark'.
 
+Includes a cryptanalysis tool capable of breaking Enigma-encrypted messages using only ciphertext.
+
 Inspired by [Mike Pound](https://github.com/mikepound)'s [enigma](https://github.com/mikepound/enigma) project.
 
 ## Usage
@@ -16,7 +18,39 @@ Change to the project directory:
 cd Enigma-Simulator
 ```
 
-Import the simulator:
+Install dependencies:
+```
+pip3 install -r requirements.txt
+```
+
+Run the main script:
+```
+python3 main.py
+```
+
+The `main.py` script provides an interface for both the Enigma machine simulator and the cryptanalysis tool. When you run `main.py`, you can choose to either simulate an Enigma machine or perform cryptanalysis on an Enigma-encrypted message.
+
+#### Enigma Machine Simulator
+
+For the Enigma machine simulator, you can customise:
+- Rotors
+- Rotor positions
+- Ring settings
+- Reflector
+- Plugboard connections
+
+#### Cryptanalysis Tool
+
+For the cryptanalysis tool, you can customise:
+- Rotors (cracking Enigma with rotors I-V or I-VIII; 4-rotor Enigma machines are not supported yet)
+- Reflector
+- Top N (the number of top rotor and rotor position combinations considered for finding the best ring settings; default is 1000)
+- Max Pairs (the maximum number of plugboard pairs considered during cracking; default is 10)
+
+### Importing the Simulator
+
+If you prefer to import and use the Enigma machine simulator directly in your own Python environment:
+
 ```python
 from enigma import Enigma
 ```
@@ -75,3 +109,30 @@ By default, the script allows for a wide range of component configurations, incl
 | **Reflector Types** | `UKW_A`, `UKW_B`, `UKW_C` | `UKW_B_THIN`, `UKW_C_THIN` |
 | **Mandatory Rotors** | At least one of `VI`, `VII`, `VIII` must be included | At least one of `VI`, `VII`, `VIII` must be included |
 | **Plugboard Connections** | Up to 10 letter pairs | Up to 10 letter pairs |
+
+## Cryptanalysis
+
+- **Scoring**: Uses quadgrams for scoring; a fitness function determines how 'English-like' the decryption is. Only English is implemented currently, but other languages can be added by generating new quadgram files.
+- **Target Length**: Designed to decrypt messages of length 200-250 characters using only the ciphertext.
+- **Complexity Reduction**: The process exploits the fact that the rotor order and indicator settings can be determined independent of the plugboard and ring settings, significantly reducing overall complexity.
+
+### Steps
+
+#### 1. Determine Rotor Order and Indicator Settings:
+
+- Try deciphering the ciphertext with each rotor combination and rotor order for all possible combinations of indicator settings, assuming the ring settings are 'AAA'.
+- Store the top N (1000 by default) decryptions for the next step.
+
+#### 2. Find Ring Settings:
+
+- Using the best rotor and indicator settings from the previous step, try each possible ring setting on the fast rotor first.
+- The rotors must stay registered with the recovered indicator setting, so as each ring is moved, the trial indicator setting for that rotor is moved in the same direction.
+- Use quadgram statistics to rank the candidates.
+
+#### 3. Find Plugboard Settings:
+
+- First, store the score with no plugboard.
+- Try all 2-letter pairs in the first position and fix the highest scoring pair if it scores higher than with no plugboard.
+- Remove those letters from the alphabet list and repeat for up to the maximum number of pairs (default is 10).
+
+By following these steps, the script efficiently reduces the problem space and attempts to crack the Enigma-encrypted message.
