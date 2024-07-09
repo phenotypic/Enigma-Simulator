@@ -97,13 +97,13 @@ By default, the script allows for a wide range of component configurations, incl
 
 #### Complexity of the Enigma Machine
 
-The keyspace of the Enigma cipher is composed of several components: the rotor selection and their order, the rotor positions, the ring settings, and the plugboard settings. For a 3-rotor machine with 8 rotors to choose from, selecting and arranging 3 out of these 8 can be done in 336 ways.
+The keyspace of the Enigma cipher is composed of several components: the rotor selection and their order, the rotor positions, the ring settings, and the plugboard settings. For a 3-rotor machine with 8 rotors to choose from, selection and arrangement can be done in 336 ways.
 
 Each of the 3 rotors can be set to any of the 26 positions, leading to $26^3 = 17,576$ possible indicator settings. Similarly, each rotor can have its ring set to any of the 26 positions, giving another $26^3 = 17,576$ possible ring settings.
 
 The plugboard can connect up to 10 pairs of letters out of the 26 letters. The number of ways to do this is $\frac{26!}{16! \times 10! \times 2^{10}} \approx 150,738,274,937,250$.
 
-Combining all these factors, the total number of possible configurations for an Enigma machine with these settings is approximately $336 \times 17,576 \times 17,576 \times 150,738,274,937,250 \approx 1.077 \times 10^{23}$, which is over one hundred sextillion possible configurations.
+Combining these factors, the total number of possible configurations for an Enigma machine with these settings is approximately $336 \times 17,576 \times 17,576 \times 150,738,274,937,250 \approx 1.565 \times 10^{25}$, which is over fifteen septillion possible configurations.
 
 
 #### Overview 
