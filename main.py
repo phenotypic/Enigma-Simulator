@@ -122,7 +122,7 @@ def get_crack_settings():
         elif chosen_setting == '3':
             user_config['Top N'] = int(input('\nEnter top N: '))
         elif chosen_setting == '4':
-            user_config['Max Pairs'] = int(input('\mEnter max pairs: '))
+            user_config['Max Pairs'] = int(input('\nEnter max pairs: '))
 
 def crack_enigma(user_config, ciphertext):
     scorer = ngram_score('english_quintgrams.txt')
