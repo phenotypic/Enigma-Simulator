@@ -103,7 +103,7 @@ Each of the 3 rotors can be set to any of the 26 positions, leading to $26^3 = 1
 
 The plugboard can connect up to 10 pairs of letters out of the 26 letters. The number of ways to do this is $\frac{26!}{16! \times 10! \times 2^{10}} \approx 150,738,274,937,250$.
 
-Combining these factors, the total number of possible configurations for an Enigma machine with these settings is approximately $336 \times 17,576 \times 17,576 \times 150,738,274,937,250 \approx 1.565 \times 10^{25}$, which is over fifteen septillion possible configurations.
+Combining these factors, there are approximately fifteen septillion possible configurations: $336 \times 17,576 \times 17,576 \times 150,738,274,937,250 \approx 1.565 \times 10^{25}$.
 
 
 #### Overview 
