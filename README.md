@@ -95,6 +95,19 @@ By default, the script allows for a wide range of component configurations, incl
 
 ## Cryptanalysis
 
+#### Complexity of the Enigma Machine
+
+The keyspace of the Enigma cipher is composed of several components: the rotor selection and their order, the rotor positions, the ring settings, and the plugboard settings. For a 3-rotor machine with 8 rotors to choose from, selecting and arranging 3 out of these 8 can be done in 336 ways.
+
+Each of the 3 rotors can be set to any of the 26 positions, leading to $26^3 = 17,576$ possible indicator settings. Similarly, each rotor can have its ring set to any of the 26 positions, giving another $26^3 = 17,576$ possible ring settings.
+
+The plugboard can connect up to 10 pairs of letters out of the 26 letters. The number of ways to do this is $\frac{26!}{16! \times 10! \times 2^{10}} \approx 150,738,274,937,250$.
+
+Combining all these factors, the total number of possible configurations for an Enigma machine with these settings is approximately $336 \times 17,576 \times 17,576 \times 150,738,274,937,250 \approx 1.077 \times 10^{23}$, which is over one hundred sextillion possible configurations.
+
+
+#### Overview 
+
 - **Scoring**: Uses quadgrams for scoring; a fitness function determines how 'English-like' the decryption is. Only English is implemented currently, but other languages can be added by generating new quadgram files.
 - **Target Length**: Designed to decrypt messages of length 200-250 characters using only the ciphertext.
 - **Complexity Reduction**: The process exploits the fact that the rotor order and indicator settings can be determined independent of the plugboard and ring settings, significantly reducing overall complexity.
@@ -107,8 +120,6 @@ For the cryptanalysis tool, you can customise:
 | Reflector | Choose reflector `UKW_A`, `UKW_B`, or `UKW_C` |
 | Top N | The number of top rotor and rotor position combinations considered for finding the best ring settings (default is `1000`) |
 | Max Pairs | The maximum number of plugboard pairs considered during cracking (default is `10`) |
-
-### Steps
 
 #### 1. Determine Rotor Order and Indicator Settings:
 
