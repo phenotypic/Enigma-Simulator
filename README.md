@@ -105,8 +105,8 @@ For the cryptanalysis tool, you can customise:
 | --- | --- |
 | Rotors | Crack enigma with rotors `I`-`V` or `I`-`VIII` |
 | Reflector | Choose reflector `UKW_A`, `UKW_B`, or `UKW_C` |
-| Top N | The number of top rotor and rotor position combinations considered for finding the best ring settings (default is `1000` |
-| Max Pairs | The maximum number of plugboard pairs considered during cracking (default is `10` |
+| Top N | The number of top rotor and rotor position combinations considered for finding the best ring settings (default is `1000`) |
+| Max Pairs | The maximum number of plugboard pairs considered during cracking (default is `10`) |
 
 ### Steps
 
