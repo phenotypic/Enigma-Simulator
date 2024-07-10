@@ -2,7 +2,7 @@
 
 A historically accurate Enigma machine simulator written in Python. Supports both 3- and 4-rotor machines including the Enigma I, Enigma M3, and Enigma M4 'Shark'.
 
-Includes a cryptanalysis tool capable of breaking Enigma-encrypted messages using only ciphertext.
+Features a cryptanalysis tool which leverages fitness functions to decrypt Enigma-encrypted messages using only ciphertext.
 
 ## Usage
 
@@ -111,8 +111,6 @@ OZLUDYAKMGMXVFVARPMJIKVWPMBVWMOIDHYPLAYUWGBZFAFAFUQFZQISLEZMYPVBRDDLAGIHIFUJDFAD
 
 First, we decrypt the ciphertext using all rotor combinations and orders, and all possible rotor positions, assuming the ring settings are `1, 1, 1`. We store the top N (`1000` by default) decryptions and their scores for the next step.
 
-Here is the 810<sup>th</sup> highest ranking combination (the top candidate had a fitness of `-5686.731256460109` with rotors `II, V, I` and rotor positions `3, 6, 6`):
-
 ```
 GDFOWZVAIYNSDXYMHUCDWZUGSKDXTXWOIZEUFIGWECTEWRZEDTUYQRSTOOWPTMNMQGJJWJYKMWCPHJOKPQLFNUVGGBQVAVAOZTJSWTEUMCOKVKJEHUGZFNKNBBRAFKWNLSNAQSQBWOLMSNJQLIQXQFNUNYBLNSKUGHAJELTAQLQQYENLZOZOYNQYHNRONAIVUZQVSUEDZEMFWCHXWHTXJJWCMNYONQVCNDZDZDFGJTKQDWBDSROSMSUSKNJPTAKEIQXMAEHQKJAKSXMOANICTFEZZNFCSXIXKONKOXWBTMJVNSOPLWIDHCZPMUSTYDRRYPLGVYICUUBWEYFRHROPNBESIXRABBAGWEXLQYWWJCJQYCNDPSRMJPWBHVXVTXYTBXSRZQLSEJNGZLXNILRFAEHESOQRETQZGCYDKZKTXRKAYPVELTJNZHNQJZTOUKNUWVNDUQYQUPCXSPOUWYAMVXERPXEVPMVKYLULQYYWDTUOUBXRQDMYJAMXVKHSMQXOLGXXHDPSTUZQWEABRRLAVHLRPCXCBZHEFVMUHYUXXLBAMFOYTWKJGWNIQNXEZENJWOOHHDWP
 
@@ -121,6 +119,8 @@ Rotors: II, V, III
 Rotor positions: 22, 7, 23
 Ring settings: 1, 1, 1
 ```
+
+**Note:** At this stage, the highest ranking candidate isn't always the best. The one shown above is the 810<sup>th</sup> highest. The top candidate had a fitness of `-5686.731256460109` with rotors `II, V, I` and rotor positions `3, 6, 6`.
 
 #### 2. Find Ring Settings
 
