@@ -9,7 +9,7 @@ available_reflectors = list(enigma.Reflector.reflector_encodings.keys())
 
 def modify_array(user_config, option):
     option = list(user_config.keys())[int(option) - 1]
-    input_str = input(f'\nEnter {option.lower()}: ')
+    input_str = input(f'\nEnter {option.lower()}: ').replace("'", '')
     if ',' in input_str or ' ' in input_str:
         input_str = re.split(r',\s*|\s+', input_str.strip())
     
