@@ -164,6 +164,7 @@ This is our final decrypted message. While not perfect, it is mostly readable an
 ## Resources
 
 - Mike Pound's [enigma](https://github.com/mikepound/enigma)
+- cryptii's [Enigma machine](https://cryptii.com/pipes/enigma-machine)
 - Practical Cryptography's [Cryptanalysis of Enigma](http://www.practicalcryptography.com/cryptanalysis/breaking-machine-ciphers/cryptanalysis-enigma/)
 - Jim Gillogly's [Ciphertext only Cryptanalysis of the Enigma](http://web.archive.org/web/20060720040135/http://members.fortunecity.com/jpeschel/gillog1.htm)
 - Heidi Williams's [Applying Statistical Language Recognition Techniques in the Ciphertext only Cryptanalysis of Enigma](http://www.tandfonline.com/doi/abs/10.1080/0161-110091888745)
