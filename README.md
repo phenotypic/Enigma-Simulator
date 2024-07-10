@@ -95,7 +95,7 @@ By default, the script allows for a wide range of component configurations, incl
 
 For a 3-rotor Enigma machine with 8 rotors to choose from, there are over forty-five septillion possible configurations. This includes variations in rotor choices, orders, positions, ring settings, reflectors, and plugboard settings. Even with modern computers, brute-forcing all these combinations is infeasible. However, we can significantly reduce the complexity of cracking the code using fitness functions.
 
-Fitness functions evaluate how "English-like" a piece of text is. We use N-grams, which provide statistics based on the probability of sequences of characters like `TION`, `OULD`, and `IGHT`. This method exploits one of Enigma's weaknesses: messages decrypted with partially correct settings will show fragments of readable text, which improves the overall fitness score. This technique is most effective with messages longer than 200 characters.
+Fitness functions evaluate how "English-like" a piece of text is. We use N-grams, which provide statistics based on the probability of sequences of characters like `IONAL`, `OUGHT`, and `ATING`. This method exploits one of Enigma's weaknesses: messages decrypted with partially correct settings will show fragments of readable text, which improves the overall fitness score. This technique is most effective with messages longer than 200 characters.
 
 ### Cracking the Code
 
@@ -155,7 +155,7 @@ This is our final decrypted message. While not perfect, it is mostly readable an
 
 | Setting | Description | Default |
 | --- | --- | --- |
-| N-Gram File | File from the `frequencies` folder for use in N-gram statistics (download [here](http://www.practicalcryptography.com/cryptanalysis/letter-frequencies-various-languages/)) | `english_quadgrams.txt` |
+| N-Gram File | File from the `frequencies` folder for use in N-gram statistics (download [here](http://www.practicalcryptography.com/cryptanalysis/letter-frequencies-various-languages/)) | `english_quintgrams.txt` |
 | Rotors | Crack enigma with rotors `I`-`V` or `I`-`VIII` | `I, II, III, IV, V` |
 | Reflector | Choose reflector `UKW_A`, `UKW_B`, or `UKW_C` | `UKW_B` |
 | Top N | The number of top rotor and rotor position combinations considered for finding the best ring settings | `1000` |
