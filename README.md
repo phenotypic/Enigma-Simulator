@@ -93,15 +93,15 @@ By default, the script allows for a wide range of component configurations, incl
 
 ## Cryptanalysis
 
-For a 3-rotor machine with 8 rotors to choose from, there are more than forty-five septillion possible configurations of rotors, rotor orders, rotor positions, ring settings, reflectors, and plugboards. Even with modern computers, this is too many to bruteforce. However, we can use fitness functions to significantly reduce the overall complexity of the cracking process. 
+For a 3-rotor Enigma machine with 8 rotors to choose from, there are over forty-five septillion possible configurations. This includes variations in rotor choices, orders, positions, ring settings, reflectors, and plugboard settings. Even with modern computers, brute-forcing all these combinations is infeasible. However, we can significantly reduce the complexity of cracking the code using fitness functions.
 
-Fitness functions measure how 'English-like' a piece of text is. Here, we use N-grams which return a statistic based on the probability of constituent sequences of characters, e.g. `IONAL`, `OUGHT`, and `OWEVE`. This exploits one of Enigma's key weaknesses: messages decrypted with partially correct settings will have islands of plaintext that are reflected in overall fitness. This works best against messages with >200 characters.
+Fitness functions evaluate how "English-like" a piece of text is. We use N-grams, which provide statistics based on the probability of sequences of characters like `IONAL`, `OUGHT`, and `OWEVE`. This method exploits one of Enigma's weaknesses: messages decrypted with partially correct settings will show fragments of readable text, which improves the overall fitness score. This technique is most effective with messages longer than 200 characters.
 
 ### Cracking
 
-Performing this ciphertext-only attack consists of determining rotor order and initial rotor positions, finding ring settings, and deducing the plugboard settings.
+This ciphertext-only attack involves determining rotor order and initial positions, finding ring settings, and deducing plugboard settings.
 
-For this example, we have a 584 character message encrypted on an Enigma M3 using unkown settings:
+For example, let's take a 584-character message encrypted with unknown settings on an Enigma M3:
 
 ```
 OZLUDYAKMGMXVFVARPMJIKVWPMBVWMOIDHYPLAYUWGBZFAFAFUQFZQISLEZMYPVBRDDLAGIHIFUJDFADORQOOMIZPYXDCBPWDSSNUSYZTJEWZPWFBWBMIEQXRFASZLOPPZRJKJSPPSTXKPUWYSKNMZZLHJDXJMMMDFODIHUBVCXMNICNYQBNQODFQLOGPZYXRJMTLMRKQAUQJPADHDZPFIKTQBFXAYMVSZPKXIQLOQCVRPKOBZSXIUBAAJBRSNAFDMLLBVSYXISFXQZKQJRIQHOSHVYJXIFUZRMXWJVWHCCYHCXYGRKMKBPWRDBXXRGABQBZRJDVHFPJZUSEBHWAEOGEUQFZEEBDCWNDHIAQDMHKPRVYHQGRDYQIOEOLUBGBSNXWPZCHLDZQBWBEWOCQDBAFGUVHNGCIKXEIZGIZHPJFCTMNNNAUXEVWTWACHOLOLSLTMDRZJZEVKKSSGUUTHVXXODSKTFGRUEIIXVWQYUIPIDBFPGLBYXZTCOQBCAHJYNSGDYLREYBRAKXGKQKWJEKWGAPTHGOMXJDSQKYHMFGOLXBSKVLGNZOAXGVTGXUIVFTGKPJU
@@ -109,9 +109,9 @@ OZLUDYAKMGMXVFVARPMJIKVWPMBVWMOIDHYPLAYUWGBZFAFAFUQFZQISLEZMYPVBRDDLAGIHIFUJDFAD
 
 #### 1. Determine Rotor Order and Rotor Positions
 
-First, we decipher the ciphertext with each rotor combination and rotor order for all possible combinations of rotor positions, assuming the ring settings are `1, 1, 1`. The top N (`1000` by default) decryptions are stored alongside their score for the next step.
+First, we decrypt the ciphertext using all rotor combinations and orders, and all possible rotor positions, assuming the ring settings are `1, 1, 1`. We store the top N (`1000` by default) decryptions and their scores for the next step.
 
-Below is the 810th highest ranking combination (the top ranking candidate had a fitness of `5686.731256460109` with rotors `II, V, I` and rotor positions `3, 6, 6`):
+Here is the 810<sup>th</sup> highest ranking combination (the top candidate had a fitness of `-5686.731256460109` with rotors `II, V, I` and rotor positions `3, 6, 6`):
 
 ```
 GDFOWZVAIYNSDXYMHUCDWZUGSKDXTXWOIZEUFIGWECTEWRZEDTUYQRSTOOWPTMNMQGJJWJYKMWCPHJOKPQLFNUVGGBQVAVAOZTJSWTEUMCOKVKJEHUGZFNKNBBRAFKWNLSNAQSQBWOLMSNJQLIQXQFNUNYBLNSKUGHAJELTAQLQQYENLZOZOYNQYHNRONAIVUZQVSUEDZEMFWCHXWHTXJJWCMNYONQVCNDZDZDFGJTKQDWBDSROSMSUSKNJPTAKEIQXMAEHQKJAKSXMOANICTFEZZNFCSXIXKONKOXWBTMJVNSOPLWIDHCZPMUSTYDRRYPLGVYICUUBWEYFRHROPNBESIXRABBAGWEXLQYWWJCJQYCNDPSRMJPWBHVXVTXYTBXSRZQLSEJNGZLXNILRFAEHESOQRETQZGCYDKZKTXRKAYPVELTJNZHNQJZTOUKNUWVNDUQYQUPCXSPOUWYAMVXERPXEVPMVKYLULQYYWDTUOUBXRQDMYJAMXVKHSMQXOLGXXHDPSTUZQWEABRRLAVHLRPCXCBZHEFVMUHYUXXLBAMFOYTWKJGWNIQNXEZENJWOOHHDWP
@@ -124,7 +124,7 @@ Ring settings: 1, 1, 1
 
 #### 2. Find Ring Settings
 
-Using the top N best rotor and rotor positions, we try all possible combinations of ring settings on the middle and rightmost rotor (keeping the leftmost rotor set to `1`). The rotors must stay registered with the recovered indicator setting, so as each ring is moved, the trial rotor position for that rotor is moved in the same direction. We store the highest ranking candidate for the next step.
+Next, using the top N rotor and position combinations, we test all possible ring settings for the middle and rightmost rotors (keeping the leftmost rotor at `1`). As each ring is moved, we adjust the corresponding rotor position accordingly. The best candidate is stored for the next step.
 
 ```
 TLMKPKCBVKCKUHSXHWVHETAQSVJOTCCNMFCHGBESBHQNKEKSPSHEYTDLCGINRITPZEATVIVIKMSKALMWGFFUDNGKAVHEVIWISMFCHINHELDUHIILCBCDEAINAZEKNVNIGEPBVAWFMEPSOFSAKWHABECJSKALCBSPKXRILBEJBENKWMFBUSTKAEGIRDBDSLUVKHIGPVPMVSDEISOYDTEWBULOATXECEFZINGOAVHJQNTBXMPBCINEFNVKZIAAFWGSKLNYCLNDLYETFMIFINTHKRMHEDFWEDUEMTNBTUQFDIVISDIAAMXUZAVXMOXFPGVNZCYNABUIIVNVHFVVPSHPFLINGFPDVHHFNQREWVMVHEQZNQTIKNCLNMFCNICGSSHUNOIEVXQPQKUGJFNNKZVFVPIKICPBSUWKEISUCHFSFGFLBPPPKBOLUVTOCZZOFEDCHDYQSVFFDKAUMDEMPVIYPPUCQFDYBENVVIKNIQEFBBWEPGUYODBOSYINNAPRIVGFQKYZAFNVFDWBTCKSCBIREBTCELVAIVSNDAQYXYWESKEUSNSEQCRITERKUNLBDIGUWRXROWDS
@@ -137,7 +137,7 @@ Ring settings: 1, 4, 24
 
 #### 3. Find Plugboard Settings
 
-First, we store the score of the best candidate with no plugboard. Then all 2-letter pairs are tried in the first position and we fix the highest scoring pair if it scores higher than with no plugboard. Those letters are removed from the alphabet list and the process is repeated up to a maximum number of pairs (default is `10`).
+We first record the score of the best candidate without a plugboard. Then, we try all 2-letter pairs in the first position, fixing the highest scoring pair if it improves the score. These letters are then removed from the list, and the process repeats up to a maximum number of pairs (default is `10`).
 
 ```
 JBROPOSETOCONSIDERTHEQUESTPHNCANMACHINESTHINKTHISSHTYVDBEGINWITHDEFINITIONSOFDTRMEANINGOFTHETERMSMACHINHRBDTHINKTHEDEFINITIONSMIGEJLEFRAMEDSOASTOREFLECTSOFBCLSPOSSIBLETHENORMALUSEOFSGPWORDSBUTTHISATTITUDEISDYDVEROUSIFTHEMEANINGOFTHEWNVUSMACHINEANDTHINKARETOBEENJNDBYEXAMININGHOWTHEYAREDWEMONLYUSEDITISDIFFICULTTDPKCAPETHECONCLUSIONTHATTHSSGANINGANDTHEANSWERTOTHEQENOTIONCANMACHINESTHINKISTXQPSOUGHTINASTATISTICALSUROLISUCHASAGALLUPPOLLBUTTHIPVKABSURDINSTEADOFATTEMPTIXPSUCHADEFINITIONISHALLREPGOLKDBCSYIPNDPXIGGAQOYZFAMEADDSCLOSELYRELATEDTOITANDFQYXPRESSEDINRELATIVELYUNAXDIGUOUSWORDS
@@ -148,6 +148,8 @@ Rotor positions: 22, 7, 23
 Ring settings: 1, 4, 24
 Plugboard: AF, KO, TV, BL, RW
 ```
+
+This is our final decrypted message. While not perfect, it is mostly readable and recognisable as the opening paragraph from Alan Turing's seminal [Computing Machinery and Intelligence](https://doi.org/10.1093/mind/LIX.236.433) paper.
 
 ### Settings
 
