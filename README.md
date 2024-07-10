@@ -153,12 +153,13 @@ This is our final decrypted message. While not perfect, it is mostly readable an
 
 ### Cryptanalysis Settings
 
-| Setting | Description |
-| --- | --- |
-| Rotors | Crack enigma with rotors `I`-`V` or `I`-`VIII` |
-| Reflector | Choose reflector `UKW_A`, `UKW_B`, or `UKW_C` |
-| Top N | The number of top rotor and rotor position combinations considered for finding the best ring settings (default is `1000`) |
-| Max Pairs | The maximum number of plugboard pairs considered during cracking (default is `10`) |
+| Setting | Description | Default |
+| --- | --- | --- |
+| N-Gram File | File from the `frequencies` folder for use in N-gram statistics (download [here](http://www.practicalcryptography.com/cryptanalysis/letter-frequencies-various-languages/)) | `english_quadgrams.txt` |
+| Rotors | Crack enigma with rotors `I`-`V` or `I`-`VIII` | `I, II, III, IV, V` |
+| Reflector | Choose reflector `UKW_A`, `UKW_B`, or `UKW_C` | `UKW_B` |
+| Top N | The number of top rotor and rotor position combinations considered for finding the best ring settings | `1000` |
+| Max Pairs | The maximum number of plugboard pairs considered during cracking | `10` |
 
 ## Resources
 
