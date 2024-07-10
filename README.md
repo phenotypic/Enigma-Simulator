@@ -4,8 +4,6 @@ A historically accurate Enigma machine simulator written in Python. Supports bot
 
 Includes a cryptanalysis tool capable of breaking Enigma-encrypted messages using only ciphertext.
 
-Inspired by [Mike Pound](https://github.com/mikepound)'s [enigma](https://github.com/mikepound/enigma) project.
-
 ## Usage
 
 Clone the repository:
@@ -95,24 +93,59 @@ By default, the script allows for a wide range of component configurations, incl
 
 ## Cryptanalysis
 
-#### Complexity of the Enigma Machine
+For a 3-rotor machine with 8 rotors to choose from, there are more than forty-five septillion possible configurations of rotors, rotor orders, rotor positions, ring settings, reflectors, and plugboards. Even with modern computers, this is too many to bruteforce. However, we can use fitness functions to significantly reduce the overall complexity of the cracking process. 
 
-The keyspace of the Enigma cipher is composed of several components: the rotor selection and their order, the rotor positions, the ring settings, and the plugboard settings. For a 3-rotor machine with 8 rotors to choose from, selection and arrangement can be done in 336 ways.
+Fitness functions measure how 'English-like' a piece of text is. Here, we use N-grams which return a statistic based on the probability of constituent sequences of characters, e.g. `IONAL`, `OUGHT`, and `OWEVE`. This exploits one of Enigma's key weaknesses: messages decrypted with partially correct settings will have islands of plaintext that are reflected in overall fitness. This works best against messages with >200 characters.
 
-Each of the 3 rotors can be set to any of the 26 positions, leading to $26^3 = 17,576$ possible indicator settings. Similarly, each rotor can have its ring set to any of the 26 positions, giving another $26^3 = 17,576$ possible ring settings.
+### Cracking
 
-The plugboard can connect up to 10 pairs of letters out of the 26 letters. The number of ways to do this is $\frac{26!}{16! \times 10! \times 2^{10}} \approx 150,738,274,937,250$.
+```
+OZLUDYAKMGMXVFVARPMJIKVWPMBVWMOIDHYPLAYUWGBZFAFAFUQFZQISLEZMYPVBRDDLAGIHIFUJDFADORQOOMIZPYXDCBPWDSSNUSYZTJEWZPWFBWBMIEQXRFASZLOPPZRJKJSPPSTXKPUWYSKNMZZLHJDXJMMMDFODIHUBVCXMNICNYQBNQODFQLOGPZYXRJMTLMRKQAUQJPADHDZPFIKTQBFXAYMVSZPKXIQLOQCVRPKOBZSXIUBAAJBRSNAFDMLLBVSYXISFXQZKQJRIQHOSHVYJXIFUZRMXWJVWHCCYHCXYGRKMKBPWRDBXXRGABQBZRJDVHFPJZUSEBHWAEOGEUQFZEEBDCWNDHIAQDMHKPRVYHQGRDYQIOEOLUBGBSNXWPZCHLDZQBWBEWOCQDBAFGUVHNGCIKXEIZGIZHPJFCTMNNNAUXEVWTWACHOLOLSLTMDRZJZEVKKSSGUUTHVXXODSKTFGRUEIIXVWQYUIPIDBFPGLBYXZTCOQBCAHJYNSGDYLREYBRAKXGKQKWJEKWGAPTHGOMXJDSQKYHMFGOLXBSKVLGNZOAXGVTGXUIVFTGKPJU
 
-Combining these factors, there are approximately fifteen septillion possible configurations: $336 \times 17,576 \times 17,576 \times 150,738,274,937,250 \approx 1.565 \times 10^{25}$.
+Score: -6246.36679772713
+```
 
+#### 1. Determine Rotor Order and Rotor Positions
 
-#### Overview 
+First, we decipher the ciphertext with each rotor combination and rotor order for all possible combinations of rotor positions, assuming the ring settings are `1, 1, 1`. The top N (`1000` by default) decryptions are stored alongside their score for the next step.
 
-- **Scoring**: Uses quadgrams for scoring; a fitness function determines how 'English-like' the decryption is. Only English is implemented currently, but other languages can be added by generating new quadgram files.
-- **Target Length**: Designed to decrypt messages of length 200-250 characters using only the ciphertext.
-- **Complexity Reduction**: The process exploits the fact that the rotor order and indicator settings can be determined independent of the plugboard and ring settings, significantly reducing overall complexity.
+```
+GDFOWZVAIYNSDXYMHUCDWZUGSKDXTXWOIZEUFIGWECTEWRZEDTUYQRSTOOWPTMNMQGJJWJYKMWCPHJOKPQLFNUVGGBQVAVAOZTJSWTEUMCOKVKJEHUGZFNKNBBRAFKWNLSNAQSQBWOLMSNJQLIQXQFNUNYBLNSKUGHAJELTAQLQQYENLZOZOYNQYHNRONAIVUZQVSUEDZEMFWCHXWHTXJJWCMNYONQVCNDZDZDFGJTKQDWBDSROSMSUSKNJPTAKEIQXMAEHQKJAKSXMOANICTFEZZNFCSXIXKONKOXWBTMJVNSOPLWIDHCZPMUSTYDRRYPLGVYICUUBWEYFRHROPNBESIXRABBAGWEXLQYWWJCJQYCNDPSRMJPWBHVXVTXYTBXSRZQLSEJNGZLXNILRFAEHESOQRETQZGCYDKZKTXRKAYPVELTJNZHNQJZTOUKNUWVNDUQYQUPCXSPOUWYAMVXERPXEVPMVKYLULQYYWDTUOUBXRQDMYJAMXVKHSMQXOLGXXHDPSTUZQWEABRRLAVHLRPCXCBZHEFVMUHYUXXLBAMFOYTWKJGWNIQNXEZENJWOOHHDWP
 
-For the cryptanalysis tool, you can customise:
+Score: -5851.911352643304
+Rotors: II, V, III
+Rotor positions: 22, 7, 23
+Ring settings: 1, 1, 1
+```
+
+#### 2. Find Ring Settings
+
+Using the top N best rotor and rotor positions, we try all possible combinations of ring settings on the middle and rightmost rotor (keeping the leftmost rotor set to `1`). The rotors must stay registered with the recovered indicator setting, so as each ring is moved, the trial rotor position for that rotor is moved in the same direction. We store the highest ranking candidate for the next step.
+
+```
+TLMKPKCBVKCKUHSXHWVHETAQSVJOTCCNMFCHGBESBHQNKEKSPSHEYTDLCGINRITPZEATVIVIKMSKALMWGFFUDNGKAVHEVIWISMFCHINHELDUHIILCBCDEAINAZEKNVNIGEPBVAWFMEPSOFSAKWHABECJSKALCBSPKXRILBEJBENKWMFBUSTKAEGIRDBDSLUVKHIGPVPMVSDEISOYDTEWBULOATXECEFZINGOAVHJQNTBXMPBCINEFNVKZIAAFWGSKLNYCLNDLYETFMIFINTHKRMHEDFWEDUEMTNBTUQFDIVISDIAAMXUZAVXMOXFPGVNZCYNABUIIVNVHFVVPSHPFLINGFPDVHHFNQREWVMVHEQZNQTIKNCLNMFCNICGSSHUNOIEVXQPQKUGJFNNKZVFVPIKICPBSUWKEISUCHFSFGFLBPPPKBOLUVTOCZZOFEDCHDYQSVFFDKAUMDEMPVIYPPUCQFDYBENVVIKNIQEFBBWEPGUYODBOSYINNAPRIVGFQKYZAFNVFDWBTCKSCBIREBTCELVAIVSNDAQYXYWESKEUSNSEQCRITERKUNLBDIGUWRXROWDS
+
+Score: -5641.195462427708
+Rotors: II, V, III
+Rotor positions: 22, 7, 23
+Ring settings: 1, 4, 24
+```
+
+#### 3. Find Plugboard Settings
+
+First, we store the score of the best candidate with no plugboard. Then we try all 2-letter pairs in the first position and fix the highest scoring pair if it scores higher than with no plugboard. Those letters are removed from the alphabet list and the process is repeated up to a maximum number of pairs (default is `10`).
+
+```
+JBROPOSETOCONSIDERTHEQUESTPHNCANMACHINESTHINKTHISSHTYVDBEGINWITHDEFINITIONSOFDTRMEANINGOFTHETERMSMACHINHRBDTHINKTHEDEFINITIONSMIGEJLEFRAMEDSOASTOREFLECTSOFBCLSPOSSIBLETHENORMALUSEOFSGPWORDSBUTTHISATTITUDEISDYDVEROUSIFTHEMEANINGOFTHEWNVUSMACHINEANDTHINKARETOBEENJNDBYEXAMININGHOWTHEYAREDWEMONLYUSEDITISDIFFICULTTDPKCAPETHECONCLUSIONTHATTHSSGANINGANDTHEANSWERTOTHEQENOTIONCANMACHINESTHINKISTXQPSOUGHTINASTATISTICALSUROLISUCHASAGALLUPPOLLBUTTHIPVKABSURDINSTEADOFATTEMPTIXPSUCHADEFINITIONISHALLREPGOLKDBCSYIPNDPXIGGAQOYZFAMEADDSCLOSELYRELATEDTOITANDFQYXPRESSEDINRELATIVELYUNAXDIGUOUSWORDS
+
+Score: -3437.8872646650743
+Rotors: II, V, III
+Rotor positions: 22, 7, 23
+Ring settings: 1, 4, 24
+Plugboard: AF, KO, TV, BL, RW
+```
+
+### Settings
 
 | Setting | Description |
 | --- | --- |
@@ -121,21 +154,9 @@ For the cryptanalysis tool, you can customise:
 | Top N | The number of top rotor and rotor position combinations considered for finding the best ring settings (default is `1000`) |
 | Max Pairs | The maximum number of plugboard pairs considered during cracking (default is `10`) |
 
-#### 1. Determine Rotor Order and Indicator Settings:
+## Resources
 
-- Try deciphering the ciphertext with each rotor combination and rotor order for all possible combinations of indicator settings, assuming the ring settings are 'AAA'.
-- Store the top N (1000 by default) decryptions for the next step.
-
-#### 2. Find Ring Settings:
-
-- Using the best rotor and indicator settings from the previous step, try each possible ring setting on the fast rotor first.
-- The rotors must stay registered with the recovered indicator setting, so as each ring is moved, the trial indicator setting for that rotor is moved in the same direction.
-- Use quadgram statistics to rank the candidates.
-
-#### 3. Find Plugboard Settings:
-
-- First, store the score with no plugboard.
-- Try all 2-letter pairs in the first position and fix the highest scoring pair if it scores higher than with no plugboard.
-- Remove those letters from the alphabet list and repeat for up to the maximum number of pairs (default is 10).
-
-By following these steps, the script efficiently reduces the problem space and attempts to crack the Enigma-encrypted message.
+- Mike Pound's [enigma](https://github.com/mikepound/enigma)
+- Practical Cryptography's [Cryptanalysis of Enigma](http://www.practicalcryptography.com/cryptanalysis/breaking-machine-ciphers/cryptanalysis-enigma/)
+- Jim Gillogly's [Ciphertext only Cryptanalysis of the Enigma](http://web.archive.org/web/20060720040135/http://members.fortunecity.com/jpeschel/gillog1.htm)
+- Heidi Williams's [Applying Statistical Language Recognition Techniques in the Ciphertext only Cryptanalysis of Enigma](http://www.tandfonline.com/doi/abs/10.1080/0161-110091888745)
