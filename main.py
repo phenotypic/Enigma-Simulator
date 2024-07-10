@@ -92,6 +92,7 @@ def use_enigma(user_config, plaintext):
 
 def get_crack_settings():
     user_config = {
+        'N-Gram File': 'english_quadgrams.txt',
         'Rotors': available_rotors[:5],
         'Reflector': 'UKW_B',
         'Top N': 1000,
@@ -106,26 +107,32 @@ def get_crack_settings():
             return user_config
 
         if chosen_setting == '1':
+            file_list = os.listdir('frequencies')
+            file_table = PrettyTable(['Option', 'File'])
+            for i, file_name in enumerate(file_list):
+                file_table.add_row([i + 1, file_name])
+            print(file_table)
+    
+            user_config['N-Gram File'] = file_list[int(input('\nSelect file: ')) - 1]
+        elif chosen_setting == '2':
             rotor_table = PrettyTable(['Option', 'Number of Rotors', 'Rotors'])
             rotor_table.add_row([1, 5, ', '.join(available_rotors[:5])])
             rotor_table.add_row([2, 8, ', '.join(available_rotors[:8])])
             print(rotor_table)
 
-            # Get user input
             user_input = input('\nSelect number of rotors: ')
-
             # Mapping user input to rotor counts
             rotor_count = {'1': 5, '2': 8, '5': 5, '8': 8, '3': 3}.get(user_input)
             user_config['Rotors'] = available_rotors[:8][:rotor_count]
-        elif chosen_setting == '2':
-            select_reflector(user_config, True)
         elif chosen_setting == '3':
-            user_config['Top N'] = int(input('\nEnter top N: '))
+            select_reflector(user_config, True)
         elif chosen_setting == '4':
+            user_config['Top N'] = int(input('\nEnter top N: '))
+        elif chosen_setting == '5':
             user_config['Max Pairs'] = int(input('\nEnter max pairs: '))
 
 def crack_enigma(user_config, ciphertext):
-    scorer = ngram_score('english_quintgrams.txt')
+    scorer = ngram_score(f'frequencies/{user_config["N-Gram File"]}')
     print('\nSearching for the best rotors and rotor positions...')
     top_rotor_configs = cryptanalysis.find_rotors_and_positions(
         ciphertext, scorer, user_config['Top N'], user_config['Rotors'], user_config['Reflector']
