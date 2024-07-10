@@ -92,7 +92,7 @@ def use_enigma(user_config, plaintext):
 
 def get_crack_settings():
     user_config = {
-        'N-Gram File': 'english_quadgrams.txt',
+        'N-Gram File': 'english_quintgrams.txt',
         'Rotors': available_rotors[:5],
         'Reflector': 'UKW_B',
         'Top N': 1000,
