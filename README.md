@@ -78,7 +78,7 @@ Lampboard ← Plugboard ← Rightmost Rotor ← Middle Rotor(s) ← Leftmost Rot
 
 **Note:** Enigma machines of the German Wehrmacht (Heer and Luftwaffe) were supplied with rotors `I`-`V`, while the German Navy (Kriegsmarine) were supplied with rotors `I`-`VIII`.
 
-### Historical accuracy
+### Historical Accuracy
 
 By default, the script allows for a wide range of component configurations, including those that may not be historically accurate (e.g. reuse of the same rotor type). Follow these rules to ensure compliance with German Kriegsmarine configurations:
 
@@ -97,7 +97,7 @@ For a 3-rotor Enigma machine with 8 rotors to choose from, there are over forty-
 
 Fitness functions evaluate how "English-like" a piece of text is. We use N-grams, which provide statistics based on the probability of sequences of characters like `IONAL`, `OUGHT`, and `OWEVE`. This method exploits one of Enigma's weaknesses: messages decrypted with partially correct settings will show fragments of readable text, which improves the overall fitness score. This technique is most effective with messages longer than 200 characters.
 
-### Cracking
+### Cracking the Code
 
 This ciphertext-only attack involves determining rotor order and initial positions, finding ring settings, and deducing plugboard settings.
 
@@ -151,7 +151,7 @@ Plugboard: AF, KO, TV, BL, RW
 
 This is our final decrypted message. While not perfect, it is mostly readable and recognisable as the opening paragraph from Alan Turing's seminal [Computing Machinery and Intelligence](https://doi.org/10.1093/mind/LIX.236.433) paper.
 
-### Settings
+### Cryptanalysis Settings
 
 | Setting | Description |
 | --- | --- |
