@@ -38,10 +38,10 @@ from enigma import Enigma
 
 3-rotor enigma:
 ```python
-enigma = Enigma(rotors=['IV', 'VII', 'III'], reflector_name='UKW_B', rotor_positions=[18, 5, 21], ring_settings=[2, 14, 19], plugboard_connections=['BQ', 'CR', 'DI', 'EJ', 'KW', 'MT', 'OS', 'PX', 'UZ', 'GH'])
+enigma = Enigma(rotors=['IV', 'V', 'III'], reflector_name='UKW_B', rotor_positions=[18, 5, 21], ring_settings=[2, 14, 19], plugboard_connections=['BQ', 'CR', 'DI', 'EJ', 'KW', 'MT', 'OS', 'PX', 'UZ', 'GH'])
 transformed = enigma.transform_string('Sometimes it is the people no one can imagine anything of who do the things no one can imagine')
 print(transformed)
-# KLFNHABWWYLCJIFRDGPFSPDETDNAKRNDSZJGXKDVFKCRZYEGXSXQAJOQQOTXHONGIURHBKPYIACN
+# USZOLSBLVCGLFQDDMYIRIRJGVVNNJTERXAUYPPEAHNLWLGWMKUIZHFCQVTBNOAKUHQRBBUNWFHCG
 ```
 
 4-rotor enigma:
