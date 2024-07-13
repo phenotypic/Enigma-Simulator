@@ -2,7 +2,7 @@
 
 A historically accurate Enigma machine simulator written in Python. Supports both 3- and 4-rotor machines including the Enigma I, Enigma M3, and Enigma M4 'Shark'.
 
-Features a cryptanalysis tool which leverages fitness functions to decrypt Enigma-encrypted messages using only ciphertext.
+Features a cryptanalysis tool that leverages fitness functions to crack Enigma messages encrypted with unknown settings.
 
 ## Usage
 
@@ -93,7 +93,7 @@ By default, the script allows for a wide range of component configurations, incl
 
 ## Cryptanalysis
 
-For a 3-rotor Enigma machine with 8 rotors to choose from, there are over forty-five septillion possible configurations. This includes variations in rotor choices, orders, positions, ring settings, reflectors, and plugboard settings. Even with modern computers, brute-forcing all these combinations is infeasible. However, we can significantly reduce the complexity of cracking the code using fitness functions.
+For a 3-rotor Enigma machine with 8 rotors to choose from, there are over forty-five septillion possible configurations. This includes variations in rotor choices, orders, positions, ring settings, reflectors, and plugboard settings. Even with modern computers, brute-forcing all these combinations is infeasible. However, we can significantly reduce the complexity of cracking messages using fitness functions.
 
 Fitness functions evaluate how "English-like" a piece of text is. We use N-grams, which provide statistics based on the probability of sequences of characters like `IONAL`, `OUGHT`, and `ATING`. This method exploits one of Enigma's weaknesses: messages decrypted with partially correct settings will show fragments of readable text, which improves the overall fitness score. This technique is most effective with messages longer than 200 characters.
 
