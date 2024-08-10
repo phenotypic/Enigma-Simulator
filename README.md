@@ -2,7 +2,7 @@
 
 A historically accurate Enigma machine simulator written in Python. Supports both 3- and 4-rotor machines including the Enigma I, Enigma M3, and Enigma M4 'Shark'.
 
-Features a cryptanalysis tool that leverages fitness functions to crack Enigma messages encrypted with unknown settings.
+Features a cryptanalysis tool that leverages fitness functions to decrypt Enigma messages with unknown settings.
 
 ## Usage
 
