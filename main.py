@@ -29,8 +29,13 @@ def display_settings_table(user_config):
             display_value = str(value)
         table.add_row([i + 1, key, display_value])
     print(table)
+    while True:
+        chosen_setting = input('\nSelect option to modify: ')
+        if chosen_setting.isdigit() and 1 <= int(chosen_setting) <= len(user_config):
+            return chosen_setting
+        else:
+            print(f'Invalid option, please select a number between 1 and {len(user_config)}')
 
-    return input('\nSelect option to modify or press Return: ')
 
 def select_reflector(user_config, three_rotors=False):
     # Use a different name for the local variable to avoid shadowing
@@ -53,6 +58,7 @@ def clear_display():
     os.system('clear' if os.name != 'nt' else 'cls')
 
 def get_enigma_settings():
+    # Default settings for the Enigma machine
     user_config = {
         'Rotors': ['VI', 'I', 'III'],
         'Rotor Positions': [1, 17, 12],
@@ -62,10 +68,11 @@ def get_enigma_settings():
     }
 
     while True:
+        # Display the settings table and prompt the user to select an option
         clear_display()
-
         chosen_setting = display_settings_table(user_config)
 
+        # If the user presses Return, check if the settings are valid and return the settings
         if not chosen_setting:
             if len(user_config['Rotors']) == len(user_config['Rotor Positions']) == len(user_config['Ring Settings']):
                 return user_config
@@ -73,6 +80,7 @@ def get_enigma_settings():
                 input('\nNumber of rotors, rotor positions, and ring settings must match! ')
                 continue
 
+        # Handle the selected option
         if chosen_setting == '1':
             print('\nAvailable rotors:', ', '.join(available_rotors))
         if chosen_setting == '4':
@@ -82,6 +90,7 @@ def get_enigma_settings():
         modify_array(user_config, chosen_setting)
 
 def use_enigma(user_config, plaintext):
+    # Create an Enigma machine with the user's settings and encrypt the plaintext
     e = enigma.Enigma(
         user_config['Rotors'], user_config['Reflector'], 
         user_config['Rotor Positions'], user_config['Ring Settings'], 
@@ -91,6 +100,7 @@ def use_enigma(user_config, plaintext):
     print('\nTransformed message:', encrypted)
 
 def get_crack_settings():
+    # Default settings for the cryptanalysis tool
     user_config = {
         'N-Gram File': 'english_quintgrams.txt',
         'Rotors': available_rotors[:5],
@@ -103,9 +113,11 @@ def get_crack_settings():
         clear_display()
         chosen_setting = display_settings_table(user_config)
 
+        # If the user presses Return, return the settings
         if not chosen_setting:
             return user_config
 
+        # Handle the selected option
         if chosen_setting == '1':
             file_list = os.listdir('frequencies')
             file_table = PrettyTable(['Option', 'File'])
@@ -173,8 +185,12 @@ if __name__ == "__main__":
     chosen_operation = input('\nSelect option: ')
     if chosen_operation == '1':
         user_config = get_enigma_settings()
-        plaintext = input('\nEnter message to encrypt: ')
-        use_enigma(user_config, plaintext)
+        while True:
+            plaintext = input('\nEnter message to encrypt: ')
+            if not plaintext:
+                break
+    
+            use_enigma(user_config, plaintext)
     elif chosen_operation == '2':
         user_config = get_crack_settings()
         ciphertext = input('\nEnter message to decrypt: ')
