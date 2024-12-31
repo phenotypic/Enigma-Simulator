@@ -31,8 +31,12 @@ def display_settings_table(user_config):
     print(table)
     while True:
         chosen_setting = input('\nSelect option to modify: ')
+        # Check if the user input is a valid option
         if chosen_setting.isdigit() and 1 <= int(chosen_setting) <= len(user_config):
             return chosen_setting
+        # If the user presses Return, return None
+        elif chosen_setting == '':
+            return
         else:
             print(f'Invalid option, please select a number between 1 and {len(user_config)}')
 
